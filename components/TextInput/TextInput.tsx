@@ -6,11 +6,12 @@ import { IInputProps, InputType } from './d'
 const Container = styled.div`
   width: 100%;
   padding: 0.625rem;
-  border: 1px solid #ced6e0;
-  border-radius: 0.3rem;
+  border: 1px solid #dbdee3;
+  border-radius: 2px;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 35px;
 
   input {
     font-size: 14px;
@@ -19,6 +20,10 @@ const Container = styled.div`
     -webkit-appearance: none;
     -moz-appearance: textfield;
     margin: 0;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+    color: #000000;
   }
 
   input::placeholder {

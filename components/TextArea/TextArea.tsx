@@ -13,7 +13,7 @@ const Container = styled.textarea`
   padding: 0.625rem;
   border: 1px solid #ced6e0;
   border-radius: 0.3rem;
-  height: 80px;
+  min-height: 103px;
   font-size: 14px;
   resize: none;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,

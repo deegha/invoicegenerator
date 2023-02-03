@@ -3,10 +3,9 @@ import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { useCurrenncy, ICurrency } from 'hooks'
 
-interface IInputs {
-  fromaddress: string
-  toaddress: string
-  shipToAddress: string
+export interface IInputs {
+  fromAddress: string
+  toAddress: string
   invoiceNumber: string
   date: string
   dueDate: string
@@ -30,19 +29,21 @@ interface IInvoiceItem {
 
 export const useHomePage = () => {
   const { getSelectedCurrency } = useCurrenncy()
-  const [inputs, setInputs] = useState<IInputs>({} as IInputs)
+  const [inputs, setInputs] = useState<IInputs>({
+    fromAddress: '',
+    toAddress: '',
+    invoiceNumber: '',
+    date: '',
+    dueDate: '',
+    paymentTerms: '',
+    poNumber: '',
+    notes: '',
+    termsAndConditions: '',
+    discount: '',
+    tax: '',
+    shipping: '',
+  } as IInputs)
   const [total, setTotal] = useState<number>(0)
-
-  useEffect(() => {
-    const selectedCur = getSelectedCurrency()
-    if (selectedCur) {
-      setInputs({
-        ...inputs,
-        currency: selectedCur,
-      })
-    }
-  }, [])
-
   const [lineItems, setLineItems] = useState<Array<IInvoiceItem>>([
     {
       id: uuidv4(),
@@ -54,6 +55,46 @@ export const useHomePage = () => {
   ])
 
   useEffect(() => {
+    const selectedCur = getSelectedCurrency()
+    if (selectedCur) {
+      setInputs({
+        ...inputs,
+        currency: selectedCur,
+      })
+    }
+
+    if (window) {
+      const presist = JSON.parse(
+        localStorage.getItem('inputs') as string
+      ) as IInputs
+      setInputs({
+        ...inputs,
+        fromAddress: (presist && presist.fromAddress) || '',
+        toAddress: (presist && presist.toAddress) || '',
+        invoiceNumber: (presist && presist.invoiceNumber) || '',
+        date: (presist && presist.date) || '',
+        dueDate: (presist && presist.dueDate) || '',
+        paymentTerms: (presist && presist.paymentTerms) || '',
+        poNumber: (presist && presist.poNumber) || '',
+        notes: (presist && presist.notes) || '',
+        termsAndConditions: (presist && presist.termsAndConditions) || '',
+        discount: (presist && presist.discount) || '',
+        tax: (presist && presist.tax) || '',
+        shipping: (presist && presist.shipping) || '',
+      })
+
+      setLineItems(JSON.parse(localStorage.getItem('lineItems') as string))
+      console.log(JSON.parse(localStorage.getItem('lineItems') as string))
+    }
+  }, [])
+
+  useEffect(() => {
+    if (window) {
+      localStorage.setItem('inputs', JSON.stringify(inputs))
+    }
+  }, [inputs])
+
+  useEffect(() => {
     const total = lineItems.reduce((acc: number, currentval) => {
       acc = currentval.rate * currentval.quanity + acc
 
@@ -61,6 +102,7 @@ export const useHomePage = () => {
     }, 0)
 
     setTotal(total)
+    localStorage.setItem('lineItems', JSON.stringify(lineItems))
   }, [lineItems])
 
   const addLineItem = () => {

@@ -1,10 +1,7 @@
 import { currencies } from 'utils/currency'
 
 export interface ICurrency {
-  countryCode: string
-  countryName: string
   currencyCode: string
-  continentName: string
 }
 
 export const useCurrenncy = () => {

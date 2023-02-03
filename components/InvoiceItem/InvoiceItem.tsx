@@ -16,14 +16,59 @@ const Container = styled.div`
   margin: 5px 0;
 `
 
-export const Amount = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
+const ContainerReadOnly = styled.div`
+  display: grid;
+  grid-template-columns: 58% 13% 12% 12%;
+  column-gap: 5px;
+  animation-name: ${slideIn};
+  animation-duration: 0.2s;
+  margin: 5px 0;
 `
 
-const ReadItem = styled.div``
+export const Amount = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: 100%;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #000000;
+`
+
+export const AmountReadOnly = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: 100%;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #000000;
+`
+
+const ReadItem = styled.div`
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  /* identical to box height */
+
+  color: #000000;
+`
+
+const ReadDiscription = styled.div`
+  padding-left: 10px;
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  /* identical to box height */
+
+  color: #000000;
+`
 
 const CloseBtn = styled.div`
   display: flex;
@@ -62,12 +107,12 @@ export const InvoiceItem: React.FC<IInvoiceItem> = ({
 
   if (readonly) {
     return (
-      <Container>
-        <ReadItem>{description}</ReadItem>
+      <ContainerReadOnly>
+        <ReadDiscription>{description}</ReadDiscription>
         <ReadItem>{quanity}</ReadItem>
         <ReadItem>{rate}</ReadItem>
-        <Amount>{amount}</Amount>
-      </Container>
+        <AmountReadOnly>{amount}</AmountReadOnly>
+      </ContainerReadOnly>
     )
   }
   return (

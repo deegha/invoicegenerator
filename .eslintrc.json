@@ -2,7 +2,7 @@
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
-    "prettier" 
+    "prettier"
   ],
   "rules": {
     "prefer-const": "error",

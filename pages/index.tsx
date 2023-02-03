@@ -1,18 +1,23 @@
 import type { NextPage } from 'next'
-import { useRouter } from 'next/router'
 import {
   TextInput,
   TextArea,
   InvoiceItem,
   Button,
-  Select,
-  Option,
+  Preview,
+  Layout,
+  H1,
+  FooterItem,
 } from 'components'
-import { useCurrenncy } from 'hooks'
 import { useInvoice } from 'context/invoiceContext'
+import { usePreview } from 'context/previewContext'
+import {
+  detaislInputs,
+  addressDetails,
+  footerDetails,
+} from 'utils/invoiceFormData'
 
 import {
-  Container,
   InnerContainer,
   InvoiceDetails,
   DetailedSectionLeft,
@@ -24,15 +29,15 @@ import {
   ButtonContainer,
   Amount,
   FooterContainer,
-  Subtotal,
-  Title,
-  LableContainer,
-  LableInline,
+  InputContainer,
   Duetotal,
+  FormWrapper,
+  LineItemHeaderItem,
+  FooterRight,
+  FooterLeft,
 } from 'styles'
 
 const Home: NextPage = () => {
-  const router = useRouter()
   const {
     total,
     inputs,
@@ -48,203 +53,109 @@ const Home: NextPage = () => {
       [name]: value,
     })
   }
+  const { showModal } = usePreview()
 
-  const { currencies, setCurrency } = useCurrenncy()
+  // const { currencies, setCurrency } = useCurrenncy()
 
-  const handleSelectCurrency = (item: Option) => {
-    const c = currencies.filter((cr) => cr.currencyCode === item.value)[0]
-    setCurrency(c)
-    setInputs({
-      ...inputs,
-      currency: c,
-    })
+  // const handleSelectCurrency = (item: Option) => {
+  //   const c = currencies.filter((cr) => cr.currencyCode === item.value)[0]
+  //   setCurrency(c)
+  //   setInputs({
+  //     ...inputs,
+  //     currency: c,
+  //   })
+  // }
+
+  const handleCreate = () => {
+    showModal()
   }
 
-  const handleCreate = () => router.push('preview')
-
   return (
-    <Container>
+    <Layout>
       <InnerContainer>
-        <Title>INVOICE</Title>
-        <InvoiceDetails>
-          <DetailedSectionLeft>
-            <Lable>From Address</Lable>
-            <TextArea
-              value={inputs.fromaddress}
-              placeHolder="Who is this invoice from"
-              name="fromaddress"
-              onChangeText={handleTextChange}
-            />
-            <Lable>To Address</Lable>
-            <TextArea
-              value={inputs.toaddress}
-              placeHolder="Who is this invoice to"
-              name="toaddress"
-              onChangeText={handleTextChange}
-            />
-            <Lable>Ships to Address</Lable>
-            <TextArea
-              value={inputs.shipToAddress}
-              placeHolder="Ships to address"
-              name="shipToAddress"
-              onChangeText={handleTextChange}
-            />
-          </DetailedSectionLeft>
-
-          <DetailedSectionRight>
-            <LableContainer>
-              <LableInline>Invoice Number</LableInline>
-              <TextInput
-                onChangeText={handleTextChange}
-                value={inputs.invoiceNumber}
-                name="invoiceNumber"
-                type="text"
-                placeHolder="#455609"
-              />
-            </LableContainer>
-            <LableContainer>
-              <LableInline>Invoice Date</LableInline>
-              <TextInput
-                onChangeText={handleTextChange}
-                value={inputs.date}
-                name="date"
-                type="text"
-                placeHolder="yyyy-mm-dd"
-              />
-            </LableContainer>
-            <LableContainer>
-              <LableInline>Payment Terms</LableInline>
-              <TextInput
-                onChangeText={handleTextChange}
-                value={inputs.paymentTerms}
-                name="paymentTerms"
-                type="text"
-                placeHolder="How many payment terms"
-              />
-            </LableContainer>
-            <LableContainer>
-              <LableInline>Due Date</LableInline>
-              <TextInput
-                onChangeText={handleTextChange}
-                value={inputs.dueDate}
-                name="dueDate"
-                type="text"
-                placeHolder="yyyy-mm-dd"
-              />
-            </LableContainer>
-            <LableContainer>
-              <LableInline>PO Number</LableInline>
-              <TextInput
-                onChangeText={handleTextChange}
-                value={inputs.poNumber}
-                name="poNumber"
-                type="text"
-                placeHolder="#4545098"
-              />
-            </LableContainer>
-            <LableContainer>
-              <LableInline>Currency</LableInline>
-              <Select
-                onSelect={(item) => handleSelectCurrency(item)}
-                selected={
-                  inputs.currency
-                    ? {
-                        value: inputs.currency.currencyCode,
-                        label: inputs.currency.countryName,
-                      }
-                    : undefined
-                }
-                options={currencies.map((currency) => ({
-                  value: currency.currencyCode,
-                  label: currency.countryName,
-                }))}
-              />
-            </LableContainer>
-          </DetailedSectionRight>
-        </InvoiceDetails>
-        <LineItems>
-          <LineItemHeader>
-            <div>Item description</div>
-            <div>Quanity</div>
-            <div>Rate</div>
-            <Amount>Amount</Amount>
-          </LineItemHeader>
-          <LineItemsContent>
-            {lineItems.map((lineItem) => (
-              <InvoiceItem
-                removeItem={removeItem}
-                id={lineItem.id}
-                key={lineItem.id}
-                description={lineItem.description}
-                quanity={lineItem.quanity}
-                rate={lineItem.rate}
-                amount={lineItem.rate * lineItem.quanity}
-                changeDes={changeItem}
-              />
-            ))}
-          </LineItemsContent>
+        <H1>GENERATE INVOICES</H1>
+        <FormWrapper>
+          <InvoiceDetails>
+            <DetailedSectionLeft>
+              {detaislInputs.map((field) => (
+                <InputContainer key={field.name}>
+                  <Lable>{field.lable}</Lable>
+                  <TextInput
+                    value={inputs[field.value] as string}
+                    onChangeText={handleTextChange}
+                    name={field.name}
+                    type={field.type}
+                    placeHolder={field.placeHolder}
+                  />
+                </InputContainer>
+              ))}
+            </DetailedSectionLeft>
+            <DetailedSectionRight>
+              {addressDetails.map((field) => (
+                <InputContainer key={field.name}>
+                  <Lable>{field.lable}</Lable>
+                  <TextArea
+                    value={inputs[field.value] as string}
+                    onChangeText={handleTextChange}
+                    name={field.name}
+                    placeHolder={field.placeHolder}
+                  />
+                </InputContainer>
+              ))}
+            </DetailedSectionRight>
+          </InvoiceDetails>
+          <LineItems>
+            <LineItemHeader>
+              <LineItemHeaderItem>Item</LineItemHeaderItem>
+              <LineItemHeaderItem>Quantity</LineItemHeaderItem>
+              <LineItemHeaderItem>Rate</LineItemHeaderItem>
+              <Amount>Amount</Amount>
+            </LineItemHeader>
+            <LineItemsContent>
+              {lineItems.map((lineItem) => (
+                <InvoiceItem
+                  removeItem={removeItem}
+                  id={lineItem.id}
+                  key={lineItem.id}
+                  description={lineItem.description}
+                  quanity={lineItem.quanity}
+                  rate={lineItem.rate}
+                  amount={lineItem.rate * lineItem.quanity}
+                  changeDes={changeItem}
+                />
+              ))}
+            </LineItemsContent>
+          </LineItems>
           <ButtonContainer>
-            <Button value="Add Item" action={addLineItem} type="primary" />
+            <Button value="Line Item" action={addLineItem} type="secondary" />
           </ButtonContainer>
-        </LineItems>
-        <InvoiceDetails>
-          <DetailedSectionLeft>
-            <Lable>Notes</Lable>
-            <TextArea
-              value={inputs.notes}
-              placeHolder="Notes about the invoice"
-              name="notes"
-              onChangeText={handleTextChange}
-            />
-            <Lable>Terms and conditions</Lable>
-            <TextArea
-              value={inputs.termsAndConditions}
-              placeHolder="Terms and condition on this invoice"
-              name="termsAndConditions"
-              onChangeText={handleTextChange}
-            />
-          </DetailedSectionLeft>
-          <DetailedSectionRight>
-            <Subtotal>Sub total ${total}</Subtotal>
-            <LableContainer>
-              <LableInline>Discount</LableInline>
-              <TextInput
-                onChangeText={handleTextChange}
-                value={inputs.discount}
-                name="discount"
-                type="number"
-                placeHolder="Invoice number"
+          <FooterContainer>
+            <FooterLeft>
+              {footerDetails.map((field) => (
+                <InputContainer key={field.name}>
+                  <Lable>{field.lable}</Lable>
+                  <TextArea
+                    value={inputs[field.value] as string}
+                    onChangeText={handleTextChange}
+                    name={field.name}
+                    placeHolder={field.placeHolder}
+                  />
+                </InputContainer>
+              ))}
+            </FooterLeft>
+            <FooterRight>
+              <FooterItem lable={'Sub total'} value={total} />
+              <FooterItem
+                lable={<Duetotal>Balance Due</Duetotal>}
+                value={<Duetotal>{total}</Duetotal>}
               />
-            </LableContainer>
-            <LableContainer>
-              <LableInline>Tax</LableInline>
-              <TextInput
-                onChangeText={handleTextChange}
-                value={inputs.tax}
-                name="tax"
-                type="number"
-                placeHolder="Invoice number"
-              />
-            </LableContainer>
-            <LableContainer>
-              <LableInline>Shpping</LableInline>
-              <TextInput
-                onChangeText={handleTextChange}
-                value={inputs.shipping}
-                name="shipping"
-                type="number"
-                placeHolder="Invoice number"
-              />
-            </LableContainer>
-            <Duetotal>Total balance due ${total}</Duetotal>
-          </DetailedSectionRight>
-        </InvoiceDetails>
-
-        <FooterContainer>
-          <Button value="Create" action={handleCreate} type="primary" />
-        </FooterContainer>
+              <Button value="Review" action={handleCreate} type="primary" />
+            </FooterRight>
+          </FooterContainer>
+        </FormWrapper>
+        <Preview />
       </InnerContainer>
-    </Container>
+    </Layout>
   )
 }
 

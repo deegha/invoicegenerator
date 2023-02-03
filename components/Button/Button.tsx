@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
+import { colorWhite } from 'styles/commonStyles'
 
 type Button = 'primary' | 'secondary' | 'warning' | 'success'
 
@@ -19,14 +20,32 @@ interface IButtonProps {
 const ButtonContainer = styled.div<{
   type: Button
 }>`
-  padding: 15px 10px;
-  width: 100%;
-  background-color: #70a1ff;
+  ${({ type }) => {
+    if (type === 'primary') {
+      return css`
+        background: linear-gradient(91.59deg, #2a124f -9.44%, #3f0a44 104.7%);
+        width: 100%;
+      `
+    }
+
+    if (type === 'secondary') {
+      return css`
+        background: #61c1bb;
+        width: 103px;
+      `
+    }
+  }}
+
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 16px;
+  ${colorWhite}
+  height: 27px;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
-  algin-items: center;
-  border-radius: 0.3rem;
-  color: #ffffff;
+  align-items: center;
+  border-radius: 4px;
   cursor: pointer;
 `
 
