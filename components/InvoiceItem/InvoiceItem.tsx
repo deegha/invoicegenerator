@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components'
 import { TextInput } from 'components/'
 import { XCircle } from 'react-feather'
+import { useCur } from 'context/currencyContext'
 
 const slideIn = keyframes`
  0% { transform: translateY(-10px); opacity: 0 }
@@ -27,13 +28,14 @@ const ContainerReadOnly = styled.div`
 
 export const Amount = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-end;
   width: 100%;
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
   color: #000000;
+  gap: 6px;
 `
 
 export const AmountReadOnly = styled.div`
@@ -45,6 +47,7 @@ export const AmountReadOnly = styled.div`
   font-size: 12px;
   line-height: 16px;
   color: #000000;
+  gap: 2px;
 `
 
 const ReadItem = styled.div`
@@ -53,9 +56,11 @@ const ReadItem = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  /* identical to box height */
 
   color: #000000;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 `
 
 const ReadDiscription = styled.div`
@@ -64,9 +69,7 @@ const ReadDiscription = styled.div`
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
-  line-height: 16px;
-  /* identical to box height */
-
+  line-height: 16px
   color: #000000;
 `
 
@@ -78,6 +81,10 @@ const CloseBtn = styled.div`
   svg {
     cursor: pointer;
   }
+`
+
+const CurrencyIcon = styled.div`
+  font-size: 12px;
 `
 
 interface IInvoiceItem {
@@ -101,6 +108,7 @@ export const InvoiceItem: React.FC<IInvoiceItem> = ({
   removeItem,
   readonly,
 }) => {
+  const { activeCur } = useCur()
   const handleDescription = (value: string | number, name: string) => {
     if (changeDes) changeDes(value, id, name)
   }
@@ -110,8 +118,14 @@ export const InvoiceItem: React.FC<IInvoiceItem> = ({
       <ContainerReadOnly>
         <ReadDiscription>{description}</ReadDiscription>
         <ReadItem>{quanity}</ReadItem>
-        <ReadItem>{rate}</ReadItem>
-        <AmountReadOnly>{amount}</AmountReadOnly>
+        <ReadItem>
+          <CurrencyIcon>{activeCur.currencyCode}</CurrencyIcon>
+          {rate}
+        </ReadItem>
+        <AmountReadOnly>
+          <CurrencyIcon>{activeCur.currencyCode}</CurrencyIcon>
+          {amount}
+        </AmountReadOnly>
       </ContainerReadOnly>
     )
   }
@@ -132,13 +146,17 @@ export const InvoiceItem: React.FC<IInvoiceItem> = ({
         placeHolder="1"
       />
       <TextInput
+        icon={<CurrencyIcon>{activeCur.currencyCode}</CurrencyIcon>}
         value={rate}
         name="rate"
         onChangeText={handleDescription}
         type="number"
         placeHolder="0"
       />
-      <Amount>{amount}</Amount>
+      <Amount>
+        <CurrencyIcon>{activeCur.currencyCode}</CurrencyIcon>
+        {amount}
+      </Amount>
       <CloseBtn>
         <XCircle
           size={14}

@@ -1,16 +1,36 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Button, InvoiceItem } from 'components'
 import { useInvoice } from 'context/invoiceContext'
 import jsPDF from 'jspdf'
 import { usePreview } from 'context/previewContext'
 import { LineItems, LineItemsContent, Amount } from 'styles'
+import { XCircle } from 'react-feather'
+import { colorWhite } from 'styles/commonStyles'
+
+const appearAnimation = keyframes`
+  0% { opacity: 0;  }
+ 100% { opacity: 1; }
+`
+
+const appearModalAnimation = keyframes`
+ 0% { opacity: 0; transform: translateY(10px);  }
+ 100% { opacity: 1; transform: translateY(0); }
+`
 
 const ContainerOuter = styled.div<{ showModal: boolean }>`
-  position: absolute;
+  animation-name: ${appearAnimation};
+  animation-duration: 0.2s;
+
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
   top: 0;
   left: 0;
-  width: 100%;
-  min-height: 100vh;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+
   background: linear-gradient(
     126.72deg,
     rgba(0, 0, 0, 0.71) -8.9%,
@@ -26,14 +46,18 @@ const ModalWrapper = styled.div`
   max-width: 595px;
   background: transparent;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  flex-direction: column;
+  gap: 10px;
 `
 
 const Modal = styled.div`
   width: 595px;
   background: #ffffff;
   padding: 50px 20px;
+  animation-name: ${appearModalAnimation};
+  animation-duration: 0.3s;
 `
 
 const Container = styled.div`
@@ -202,9 +226,12 @@ const TotalValue = styled.div`
   font-weight: 700;
   font-size: 14px;
   line-height: 16px;
-  /* identical to box height */
-
+  text-align: right;
   color: #000000;
+`
+const CloseButton = styled.div`
+  ${colorWhite};
+  cursor: pointer;
 `
 
 export const Preview = () => {
@@ -220,7 +247,7 @@ export const Preview = () => {
       invoiceNumber,
     },
   } = useInvoice()
-  const { modalVisibility } = usePreview()
+  const { modalVisibility, hideModal } = usePreview()
 
   const generatePDF = () => {
     const doc = new jsPDF('p', 'pt', 'a4')
@@ -241,6 +268,9 @@ export const Preview = () => {
   return (
     <ContainerOuter showModal={modalVisibility}>
       <ModalWrapper>
+        <CloseButton onClick={hideModal}>
+          <XCircle />
+        </CloseButton>
         <Modal>
           <Container>
             <PageContainer id="page">

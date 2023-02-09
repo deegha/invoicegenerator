@@ -1,5 +1,4 @@
 import Link from 'next/link'
-
 import styled from 'styled-components'
 import { Home, Settings, BookOpen } from 'react-feather'
 import { ReactNode } from 'react'
@@ -9,6 +8,10 @@ import {
   colorInactive,
   colorWhite,
 } from 'styles/commonStyles'
+import { useAuth } from 'context/authContext'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { Loading } from 'components'
 
 interface IProps {
   children: React.ReactNode
@@ -117,6 +120,17 @@ const Content = styled.main`
 `
 
 export const Layout: React.FC<IProps> = ({ children }) => {
+  const { authenticated, logout } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!authenticated) {
+      router && router.push('login')
+    }
+  }, [authenticated])
+
+  if (authenticated === 'loading') return <Loading />
+
   return (
     <Container>
       <MenuBarContainer>
@@ -134,7 +148,7 @@ export const Layout: React.FC<IProps> = ({ children }) => {
               })}
             </ul>
           </NavContainer>
-          <LogOutBtn>Logout</LogOutBtn>
+          <LogOutBtn onClick={logout}>Logout</LogOutBtn>
         </MenuBar>
       </MenuBarContainer>
       <Content>{children}</Content>

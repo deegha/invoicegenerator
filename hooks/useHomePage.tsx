@@ -28,7 +28,7 @@ interface IInvoiceItem {
 }
 
 export const useHomePage = () => {
-  const { getSelectedCurrency } = useCurrenncy()
+  const { getCurrency } = useCurrenncy()
   const [inputs, setInputs] = useState<IInputs>({
     fromAddress: '',
     toAddress: '',
@@ -55,7 +55,7 @@ export const useHomePage = () => {
   ])
 
   useEffect(() => {
-    const selectedCur = getSelectedCurrency()
+    const selectedCur = getCurrency()
     if (selectedCur) {
       setInputs({
         ...inputs,
@@ -84,7 +84,6 @@ export const useHomePage = () => {
       })
 
       setLineItems(JSON.parse(localStorage.getItem('lineItems') as string))
-      console.log(JSON.parse(localStorage.getItem('lineItems') as string))
     }
   }, [])
 

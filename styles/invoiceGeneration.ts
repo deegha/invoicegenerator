@@ -132,14 +132,16 @@ export const FooterLeft = styled.div`
 `
 
 export const Subtotal = styled.h2`
-  font-size: 17px;
+  font-size: 14px;
+  display: flex;
+  gap: 5px;
 `
 
 export const Duetotal = styled.h2`
   font-weight: 700;
   font-size: 14px;
   line-height: 16px;
-  /* identical to box height */
-
   color: #000000;
+  display: flex;
+  gap: 5px;
 `

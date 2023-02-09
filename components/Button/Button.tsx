@@ -35,7 +35,7 @@ const ButtonContainer = styled.div<{
       `
     }
   }}
-
+  border:none;
   font-weight: 700;
   font-size: 14px;
   line-height: 16px;

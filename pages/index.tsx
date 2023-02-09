@@ -8,6 +8,7 @@ import {
   Layout,
   H1,
   FooterItem,
+  Currency,
 } from 'components'
 import { useInvoice } from 'context/invoiceContext'
 import { usePreview } from 'context/previewContext'
@@ -35,6 +36,7 @@ import {
   LineItemHeaderItem,
   FooterRight,
   FooterLeft,
+  Subtotal,
 } from 'styles'
 
 const Home: NextPage = () => {
@@ -144,10 +146,23 @@ const Home: NextPage = () => {
               ))}
             </FooterLeft>
             <FooterRight>
-              <FooterItem lable={'Sub total'} value={total} />
+              <FooterItem
+                lable={'Sub total'}
+                value={
+                  <Subtotal>
+                    <Currency />
+                    {total}
+                  </Subtotal>
+                }
+              />
               <FooterItem
                 lable={<Duetotal>Balance Due</Duetotal>}
-                value={<Duetotal>{total}</Duetotal>}
+                value={
+                  <Duetotal>
+                    <Currency />
+                    {total}
+                  </Duetotal>
+                }
               />
               <Button value="Review" action={handleCreate} type="primary" />
             </FooterRight>

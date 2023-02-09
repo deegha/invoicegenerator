@@ -7,11 +7,12 @@ const Container = styled.div`
   width: 100%;
   padding: 0.625rem;
   border: 1px solid #dbdee3;
-  border-radius: 2px;
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 35px;
+  gap: 2px;
 
   input {
     font-size: 14px;
@@ -62,6 +63,7 @@ export const TextInput: React.FC<IInputProps> = ({
   type,
   placeHolder,
   onChangeText,
+  icon,
 }) => {
   const [inputType, setInputType] = useState<InputType>()
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,8 +82,11 @@ export const TextInput: React.FC<IInputProps> = ({
     setInputType(type)
   }
 
+  const IconElement = icon
+
   return (
     <Container>
+      {IconElement && icon}
       <input
         multiple
         inputMode={inputType === 'number' ? 'numeric' : 'text'}
