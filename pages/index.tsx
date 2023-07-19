@@ -1,4 +1,4 @@
- import {
+import {
   TextInput,
   TextArea,
   InvoiceItem,
@@ -16,7 +16,7 @@ import {
   addressDetails,
   footerDetails,
 } from 'utils/invoiceFormData'
- import { NextPage } from 'next'
+import { NextPage } from 'next'
 
 import {
   InnerContainer,
@@ -129,7 +129,11 @@ const Home: NextPage = () => {
             </LineItemsContent>
           </LineItems>
           <ButtonContainer>
-            <Button value="Add line Item" action={addLineItem} type="secondary" />
+            <Button
+              value="Add line Item"
+              action={addLineItem}
+              type="secondary"
+            />
           </ButtonContainer>
           <FooterContainer>
             <FooterLeft>

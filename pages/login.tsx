@@ -11,29 +11,24 @@ const Container = styled.div`
   width: 100%;
 `
 const RightSide = styled.div`
-  background: linear-gradient(143.19deg, #2b124f -7.07%, #3e0943 85.27%);
   display: flex;
+  background: url("/finance.jpg") ;
+  background-size: cover;
   justify-content: center;
+   position: relative;
 `
-const HeroText = styled.div`
-  margin-top: 20vh;
-  font-family: 'Helvetica';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 100px;
-  line-height: 115px;
-  background: linear-gradient(
-    135.89deg,
-    #ffffff -27.52%,
-    rgba(255, 255, 255, 0) 103.66%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-fill-color: transparent;
-  width: 605px;
-  height: 567px;
-`
+
+const Overlay = styled.div`
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+`;
+
 
 const LeftSide = styled.div`
   background: ${backgroundColorWhite};
@@ -46,7 +41,7 @@ const LeftInnerContainer = styled.div`
   flex-direction: column;
   padding: 2;
   margin-top: 20vh;
-  padding: 20px;
+  padding: 20px 40px;
 `
 
 const Heading = styled.h1`
@@ -63,17 +58,17 @@ const TagLine = styled.div`
   font-family: 'Helvetica';
   font-style: normal;
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 14px;
   margin-top: 18px;
   color: #8a8d91;
-  width: 186px;
+  width: 200px;
 `
 
 const LoginButton = styled.div`
   font-style: normal;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 15px;
   line-height: 23px;
   cursor: pointer;
   color: #ffffff;
@@ -81,7 +76,7 @@ const LoginButton = styled.div`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   width: 347px;
-  height: 58px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,7 +121,7 @@ const LoginPage = () => {
   return (
     <Container>
       <RightSide>
-        <HeroText>Create and manage your invoices for FREE</HeroText>
+        <Overlay />
       </RightSide>
       <LeftSide>
         <LeftInnerContainer>
