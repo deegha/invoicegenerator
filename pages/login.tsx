@@ -132,7 +132,9 @@ const LoginPage = () => {
           </TagLine>
           <LoginButton onClick={doLogin}>Continue with Google</LoginButton>
           <BottomBar>
-            <BottomBarItems><Link href='/privacy_policy'>Privacy Policy</Link></BottomBarItems>
+            <BottomBarItems>
+              <Link href="/privacy_policy">Privacy Policy</Link>
+            </BottomBarItems>
             <BottomBarItems>Blog</BottomBarItems>
             <BottomBarItems>Contact</BottomBarItems>
           </BottomBar>
