@@ -12,14 +12,14 @@ const Container = styled.div`
 `
 const RightSide = styled.div`
   display: flex;
-  background: url("/finance.jpg") ;
+  background: url('/finance.jpg');
   background-size: cover;
   justify-content: center;
-   position: relative;
+  position: relative;
 `
 
 const Overlay = styled.div`
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   top: 0;
@@ -27,8 +27,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
-`;
-
+`
 
 const LeftSide = styled.div`
   background: ${backgroundColorWhite};
