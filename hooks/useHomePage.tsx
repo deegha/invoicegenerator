@@ -83,7 +83,11 @@ export const useHomePage = () => {
         shipping: (presist && presist.shipping) || '',
       })
 
-      setLineItems(localStorage.getItem('lineItems')? JSON.parse(localStorage.getItem('lineItems') as string): [])
+      setLineItems(
+        localStorage.getItem('lineItems')
+          ? JSON.parse(localStorage.getItem('lineItems') as string)
+          : []
+      )
     }
   }, [])
 

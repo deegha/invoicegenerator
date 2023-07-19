@@ -3,6 +3,7 @@ import { backgroundColorWhite } from 'styles/commonStyles'
 import { useAuth } from 'context/authContext'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const Container = styled.div`
   display: grid;
@@ -131,7 +132,7 @@ const LoginPage = () => {
           </TagLine>
           <LoginButton onClick={doLogin}>Continue with Google</LoginButton>
           <BottomBar>
-            <BottomBarItems>Privacy Policy</BottomBarItems>
+            <BottomBarItems><Link href='/privacy_policy'>Privacy Policy</Link></BottomBarItems>
             <BottomBarItems>Blog</BottomBarItems>
             <BottomBarItems>Contact</BottomBarItems>
           </BottomBar>
