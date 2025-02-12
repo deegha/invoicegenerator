@@ -250,6 +250,10 @@ export const Preview = () => {
   const { modalVisibility, hideModal } = usePreview()
 
   const generatePDF = () => {
+    if (fromAddress === '' || toAddress === '' || date === '' || total === 0) {
+      return
+    }
+
     const doc = new jsPDF('p', 'pt', 'a4')
     const html = document.querySelector('#page') as HTMLElement
     doc.text('20', 30, 3)

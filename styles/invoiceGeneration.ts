@@ -16,6 +16,9 @@ export const Container = styled.div`
 
 export const InnerContainer = styled.div`
   width: 954px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 `
 
 export const FormWrapper = styled.div`

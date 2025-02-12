@@ -72,6 +72,12 @@ const Home: NextPage = () => {
     showModal()
   }
 
+  const dissabled =
+    total === 0 ||
+    inputs.fromAddress === '' ||
+    inputs.dueDate === '' ||
+    inputs.invoiceNumber === ''
+
   return (
     <Layout>
       <InnerContainer>
@@ -168,7 +174,12 @@ const Home: NextPage = () => {
                   </Duetotal>
                 }
               />
-              <Button value="Review" action={handleCreate} type="primary" />
+              <Button
+                value="Review"
+                action={handleCreate}
+                type="primary"
+                disabled={dissabled}
+              />
             </FooterRight>
           </FooterContainer>
         </FormWrapper>
