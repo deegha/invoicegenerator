@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }) => {
     const auth = getAuth()
     return await signInWithPopup(auth, provider)
   }
-  // console.log(user, authenticated, 'authenticated')
+  console.log(user, authenticated, 'authenticated')
   const value = {
     authenticated,
     loading,

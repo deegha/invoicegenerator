@@ -12,6 +12,7 @@ import { useAuth } from 'context/authContext'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { Loading } from 'components'
+import Image from 'next/image'
 
 interface IProps {
   children: React.ReactNode
@@ -78,6 +79,9 @@ const MenuBar = styled.div`
 `
 
 const NavContainer = styled.nav`
+  display: flex;
+  align-items: center;
+  gap: 5px;
   ul {
     display: flex;
     padding: 0;
@@ -136,6 +140,12 @@ export const Layout: React.FC<IProps> = ({ children }) => {
       <MenuBarContainer>
         <MenuBar>
           <NavContainer>
+            <Image
+              src="/Invoicegen-logo-2.png"
+              width="50"
+              height="50"
+              alt="invoice gen logo"
+            />
             <ul>
               {links.map((link) => {
                 return (

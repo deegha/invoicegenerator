@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Invoice {
+  id           Int         @id @default(autoincrement())
+  userId       String      
+  invoiceNumber String     @unique
+  date         DateTime
+  paymentTerms String?
+  dueDate      DateTime?
+  poNumber     String?
+  yourAddress  String?
+  billingAddress String?
+  items        InvoiceItem[]
+  notes        String?
+  terms        String?
+  subTotal     Decimal     @default(0.00)
+  balanceDue   Decimal     @default(0.00)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model InvoiceItem {
+  id       Int     @id @default(autoincrement())
+  invoice  Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  invoiceId Int
+  description String
+  quantity   Int     @default(1)
+  rate       Decimal @default(0.00)
+  amount     Decimal @default(0.00)
+}
