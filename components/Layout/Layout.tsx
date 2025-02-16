@@ -129,9 +129,9 @@ export const Layout: React.FC<IProps> = ({ children }) => {
 
   useEffect(() => {
     if (!authenticated) {
-      router && router.push('login')
+      router.push('login')
     }
-  }, [authenticated])
+  }, [authenticated, router])
 
   if (authenticated === 'loading') return <Loading />
 

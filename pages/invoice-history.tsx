@@ -47,7 +47,7 @@ const CardItem = styled.div`
   }
 `
 
-const Home: NextPage = () => {
+const InvoiceHistory: NextPage = () => {
   const { data: invoices, isLoading } = useSWR('fetch-invoices', getInvoices)
 
   return (
@@ -56,7 +56,7 @@ const Home: NextPage = () => {
         <H1>INVOICES LIST</H1>
         <InvoiceListContainer>
           {isLoading ? (
-            <div>loading</div>
+            <ShimmerLoader />
           ) : (
             invoices?.map((invoice) => (
               <InvoiceCard key={invoice.invoiceNumber}>
@@ -73,4 +73,22 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default InvoiceHistory
+
+function ShimmerLoader() {
+  return (
+    <div className=" w-full">
+      {[...Array(8)].map((_, i) => (
+        <div
+          key={i}
+          className="flex justify-between items-center p-4 bg-gray-100 animate-pulse rounded-lg"
+        >
+          <div className="w-1/4 h-6 bg-gray-300 rounded"></div>
+          <div className="w-1/6 h-6 bg-gray-300 rounded"></div>
+          <div className="w-1/3 h-6 bg-gray-300 rounded"></div>
+          <div className="w-1/5 h-6 bg-gray-300 rounded"></div>
+        </div>
+      ))}
+    </div>
+  )
+}

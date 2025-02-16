@@ -33,6 +33,7 @@ import {
 } from './styles'
 
 import { addInvoice } from '../../services/invoiceService'
+import { useState } from 'react'
 
 export const Preview = () => {
   const {
@@ -49,9 +50,11 @@ export const Preview = () => {
       notes,
       termsAndConditions,
     },
+    clearForm,
   } = useInvoice()
   const { modalVisibility, hideModal } = usePreview()
   const { notify } = useNotification()
+  const [loading, setLoading] = useState(false)
 
   const save = async () => {
     try {
@@ -73,30 +76,62 @@ export const Preview = () => {
         })),
       })
       notify('Invoice Successfully created', 'success')
-    } catch (e) {
-      const message = 'Something went wrong while saving the invoice'
+    } catch (error) {
+      console.log(error)
 
-      notify(message, 'error')
+      if (error instanceof Error && 'code' in error) {
+        notify(error.message, 'error')
+      } else {
+        notify('Something went wrong', 'error')
+      }
+    } finally {
+      clearForm()
+      hideModal()
     }
   }
 
   const generatePDF = async () => {
-    if (fromAddress === '' || toAddress === '' || date === '' || total === 0) {
-      return
+    try {
+      if (
+        fromAddress === '' ||
+        toAddress === '' ||
+        date === '' ||
+        total === 0
+      ) {
+        return
+      }
+
+      await save()
+
+      const doc = new jsPDF('p', 'pt', 'a4')
+      const html = document.querySelector('#page') as HTMLElement
+      doc.text('20', 30, 3)
+      if (!html) return
+      doc.html(html, {
+        callback: function (pdf) {
+          pdf.save(`invoice_#${invoiceNumber}.pdf`)
+        },
+      })
+      notify('Invoice Successfully created', 'success')
+    } catch {
+      notify('Something went wrong', 'error')
+    } finally {
+      clearForm()
+      hideModal()
     }
+  }
 
+  const saveInvoice = async () => {
+    setLoading(true)
     await save()
+    setLoading(false)
+  }
 
-    const doc = new jsPDF('p', 'pt', 'a4')
-    const html = document.querySelector('#page') as HTMLElement
-    doc.text('20', 30, 3)
-    if (!html) return
-    doc.html(html, {
-      callback: function (pdf) {
-        pdf.save(`invoice_#${invoiceNumber}.pdf`)
-      },
-    })
-    notify('Invoice Successfully created', 'success')
+  const saveAndDownload = async () => {
+    setLoading(true)
+    await save()
+    await generatePDF()
+    setLoading(false)
   }
 
   const totalFormatted = total
@@ -174,11 +209,19 @@ export const Preview = () => {
             <ButtonArea>
               <ReviewButton>
                 <Button
-                  action={generatePDF}
-                  value={'Save and Download PDF'}
-                  type={'primary'}
-                />
-                <Button action={save} value={'Save'} type={'primary'} />
+                  onClick={saveAndDownload}
+                  variant={'secondary'}
+                  loading={loading}
+                >
+                  Save and Download PDF
+                </Button>
+                <Button
+                  loading={loading}
+                  onClick={saveInvoice}
+                  variant={'primary'}
+                >
+                  Save
+                </Button>
               </ReviewButton>
             </ButtonArea>
           </Container>

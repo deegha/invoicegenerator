@@ -117,7 +117,7 @@ export const ButtonContainer = styled.div`
 export const FooterContainer = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: 35% 35%;
+  grid-template-columns: 35% 38%;
   gap: 240px;
 `
 

@@ -1,79 +1,57 @@
-import styled, { css } from 'styled-components'
-import { colorWhite } from 'styles/commonStyles'
+import { cn } from 'utils/cn'
+import { ButtonHTMLAttributes } from 'react'
+import { Loader } from 'react-feather'
 
-type Button = 'primary' | 'secondary' | 'warning' | 'success'
-
-interface IButtonProps {
-  value: string
-  action: () => void
-  type: Button
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'danger'
   loading?: boolean
-  disabled?: boolean // New prop to handle disabled state
+  size?: 'small' | 'medium' | 'large'
 }
 
-const ButtonContainer = styled.div<{
-  type: Button
-  disabled?: boolean
-}>`
-  ${({ type }) => {
-    if (type === 'primary') {
-      return css`
-        background: linear-gradient(91.59deg, #2a124f -9.44%, #3f0a44 104.7%);
-        width: 100%;
-      `
-    }
-
-    if (type === 'secondary') {
-      return css`
-        background: #61c1bb;
-        width: 103px;
-      `
-    }
-  }}
-
-  border: none;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 16px;
-  ${colorWhite}
-  height: 27px;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-
-  transition: all 0.3s ease-in-out; /* Adding smooth transition for all properties */
-  transform: ${({ disabled }) =>
-    disabled ? 'scale(0.95)' : 'scale(1)'}; /* Slight shrink when disabled */
-  background: ${({ disabled, type }) =>
-    disabled
-      ? type === 'primary'
-        ? 'linear-gradient(91.59deg, #2a124f -9.44%, #3f0a44 104.7%)'
-        : '#61c1bb'
-      : type === 'primary'
-      ? 'linear-gradient(91.59deg, #5f2a8a -9.44%, #9f0b79 104.7%)'
-      : '#48b29e'}; /* Lighter/darker background for disabled vs enabled */
-`
-
-export const Button: React.FC<IButtonProps> = ({
-  value,
-  action,
-  type,
+export const Button: React.FC<ButtonProps> = ({
+  variant = 'primary',
+  size = 'medium',
   loading,
   disabled,
+  children,
+  className,
+  ...props
 }) => {
-  const handleOnClick = () => {
-    if (!loading && !disabled) {
-      action()
-    }
+  const baseStyles =
+    'font-semibold rounded-lg flex items-center justify-center gap-2 text-white transition-all duration-300 cursor-pointer shadow-md'
+
+  const sizes = {
+    small: 'px-3 py-2 text-sm',
+    medium: 'px-5 py-2 text-sm',
+    large: 'px-7 py-2 text-sm w-[220px]',
+  }
+
+  const variants = {
+    primary: 'bg-[#3674B5] hover:bg-[#578FCA]',
+    secondary: 'bg-[#A1E3F9] hover:bg-[#D1F8EF] text-black',
+    danger: 'bg-[#d32f2f] hover:bg-[#b52a2a]',
   }
 
   return (
-    <ButtonContainer onClick={handleOnClick} type={type} disabled={disabled}>
-      {loading ? 'Loading' : value}
-    </ButtonContainer>
+    <button
+      className={cn(
+        baseStyles,
+        sizes[size],
+        variants[variant],
+        disabled && 'opacity-90 cursor-not-allowed',
+        'hover:scale-105 active:scale-95',
+        className
+      )}
+      disabled={disabled || loading}
+      {...props}
+    >
+      {loading ? (
+        <div className="animate-spin">
+          <Loader className="h-5 w-5" />
+        </div>
+      ) : (
+        children
+      )}
+    </button>
   )
 }

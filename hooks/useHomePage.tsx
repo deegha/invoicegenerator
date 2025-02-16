@@ -138,6 +138,26 @@ export const useHomePage = () => {
     setLineItems([...lineItems.filter((item) => item.id !== id)])
   }
 
+  const clearForm = () => {
+    setInputs({
+      fromAddress: '',
+      toAddress: '',
+      invoiceNumber: '',
+      date: '',
+      dueDate: '',
+      paymentTerms: '',
+      poNumber: '',
+      notes: '',
+      termsAndConditions: '',
+      discount: '',
+      tax: '',
+      shipping: '',
+      currency: {
+        currencyCode: '',
+      },
+    })
+  }
+
   return {
     total,
     inputs,
@@ -146,5 +166,6 @@ export const useHomePage = () => {
     addLineItem,
     changeItem,
     removeItem,
+    clearForm,
   }
 }

@@ -1,13 +1,15 @@
 import { getAuth } from 'firebase/auth'
 import { Invoice } from '@prisma/client'
+
 export async function getInvoices() {
-  const auth = getAuth()
+  const auth = await getAuth()
   const user = auth.currentUser
 
   if (!user) {
     throw new Error('User is not logged in')
   }
 
+  console.log('here333')
   const token = await user.getIdToken()
 
   const response = await fetch('/api/invoice/get', {

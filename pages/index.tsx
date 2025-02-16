@@ -35,7 +35,6 @@ import {
   Duetotal,
   FormWrapper,
   LineItemHeaderItem,
-  FooterRight,
   FooterLeft,
   Subtotal,
 } from 'styles'
@@ -137,11 +136,9 @@ const Home: NextPage = () => {
             </LineItemsContent>
           </LineItems>
           <ButtonContainer>
-            <Button
-              value="Add line Item"
-              action={addLineItem}
-              type="secondary"
-            />
+            <Button onClick={addLineItem} variant="secondary">
+              Add lint item
+            </Button>
           </ButtonContainer>
           <FooterContainer>
             <FooterLeft>
@@ -157,32 +154,38 @@ const Home: NextPage = () => {
                 </InputContainer>
               ))}
             </FooterLeft>
-            <FooterRight>
-              <FooterItem
-                label={'Sub total'}
-                value={
-                  <Subtotal>
-                    <Currency />
-                    {total}
-                  </Subtotal>
-                }
-              />
-              <FooterItem
-                label={<Duetotal>Balance Due</Duetotal>}
-                value={
-                  <Duetotal>
-                    <Currency />
-                    {total}
-                  </Duetotal>
-                }
-              />
-              <Button
-                value="Review"
-                action={handleCreate}
-                type="primary"
-                disabled={dissabled}
-              />
-            </FooterRight>
+            <div className="flex flex-col gap-10">
+              <div className="flex flex-col gap-2">
+                <FooterItem
+                  label={'Sub total'}
+                  value={
+                    <Subtotal>
+                      <Currency />
+                      {total}
+                    </Subtotal>
+                  }
+                />
+                <FooterItem
+                  label={<Duetotal>Balance Due</Duetotal>}
+                  value={
+                    <Duetotal>
+                      <Currency />
+                      {total}
+                    </Duetotal>
+                  }
+                />
+              </div>
+              <div className="flex justify-end w-full">
+                <Button
+                  onClick={handleCreate}
+                  size="large"
+                  variant="primary"
+                  disabled={dissabled}
+                >
+                  Review
+                </Button>
+              </div>
+            </div>
           </FooterContainer>
         </FormWrapper>
         <Preview />

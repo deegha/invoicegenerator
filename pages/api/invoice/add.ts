@@ -102,6 +102,12 @@ export default async function handler(
     return res.status(201).json(newInvoice)
   } catch (error) {
     console.error('Error adding invoice:', error)
-    return res.status(500).json({ message: 'Internal Server Error' })
+
+    let message = 'Something went wrong while saving the invoice'
+
+    if (error instanceof Error && 'code' in error && error.code === 'P2002') {
+      message = 'An invoice is created for this invoice number already'
+    }
+    return res.status(500).json({ message })
   }
 }

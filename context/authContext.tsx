@@ -12,7 +12,7 @@ import { auth } from 'utils/firebase'
 interface IAuthContext {
   authenticated: boolean | 'loading'
   loading: boolean
-  user: unknown
+  user: User | null
   logout: () => void
   login: () => void
 }
@@ -23,7 +23,7 @@ interface IProps {
 
 const authContextDefaultValues: IAuthContext = {
   authenticated: false,
-  user: {},
+  user: null,
   loading: false,
   logout: () => {
     return false
@@ -65,6 +65,7 @@ export const AuthProvider: React.FC<IProps> = ({ children }) => {
     const auth = getAuth()
     return await signInWithPopup(auth, provider)
   }
+
   console.log(user, authenticated, 'authenticated')
   const value = {
     authenticated,
