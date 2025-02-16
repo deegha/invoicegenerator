@@ -4,18 +4,20 @@ import { InvoiceProvider } from 'context/invoiceContext'
 import { PreviewProvider } from 'context/previewContext'
 import { AuthProvider } from 'context/authContext'
 import { CurrencyProvider } from 'context/currencyContext'
-
+import { NotificationProvider } from 'context/notificationContext'
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider>
-      <CurrencyProvider>
-        <InvoiceProvider>
-          <PreviewProvider>
-            <Component {...pageProps} />
-          </PreviewProvider>
-        </InvoiceProvider>
-      </CurrencyProvider>
-    </AuthProvider>
+    <NotificationProvider>
+      <AuthProvider>
+        <CurrencyProvider>
+          <InvoiceProvider>
+            <PreviewProvider>
+              <Component {...pageProps} />
+            </PreviewProvider>
+          </InvoiceProvider>
+        </CurrencyProvider>
+      </AuthProvider>
+    </NotificationProvider>
   )
 }
 

@@ -123,7 +123,6 @@ export const useHomePage = () => {
   }
 
   const changeItem = (value: string | number, id: string, name: string) => {
-    console.log(typeof value, 'value', value)
     const itemIndex = lineItems.findIndex((item) => item.id === id)
     const newItems = [...lineItems]
 

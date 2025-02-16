@@ -51,7 +51,6 @@ const Home: NextPage = () => {
     removeItem,
   } = useInvoice()
   const handleTextChange = (value: string | number | Date, name: string) => {
-    console.log(value, '=====')
     setInputs({
       ...inputs,
       [name]: value,

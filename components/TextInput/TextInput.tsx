@@ -67,7 +67,6 @@ export const TextInput: React.FC<IInputProps> = ({
 }) => {
   const [inputType, setInputType] = useState<InputType>()
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(typeof e.target.value, '===============')
     if (type === 'number' && e.target.value.match(regex)) {
       return
     }

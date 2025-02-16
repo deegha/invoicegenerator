@@ -63,7 +63,7 @@ const Home: NextPage = () => {
                 <CardItem>{invoice.invoiceNumber}</CardItem>
                 <CardItem> {invoice.subTotal.toString()} USD</CardItem>
                 <CardItem>{invoice?.billingAddress}</CardItem>
-                <CardItem>{invoice?.createdAt.toISOString()}</CardItem>
+                <CardItem>{invoice?.createdAt.toDateString()}</CardItem>
               </InvoiceCard>
             ))
           )}

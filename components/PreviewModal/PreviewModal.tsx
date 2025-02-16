@@ -4,6 +4,7 @@ import jsPDF from 'jspdf'
 import { usePreview } from 'context/previewContext'
 import { LineItems, LineItemsContent, Amount } from 'styles'
 import { XCircle } from 'react-feather'
+import { useNotification } from 'hooks'
 import {
   ContainerOuter,
   ModalWrapper,
@@ -50,11 +51,41 @@ export const Preview = () => {
     },
   } = useInvoice()
   const { modalVisibility, hideModal } = usePreview()
+  const { notify } = useNotification()
+
+  const save = async () => {
+    try {
+      await addInvoice({
+        invoiceNumber: invoiceNumber,
+        date: date,
+        paymentTerms: paymentTerms,
+        dueDate: dueDate,
+        poNumber: poNumber,
+        yourAddress: fromAddress,
+        billingAddress: toAddress,
+        notes: notes,
+        terms: termsAndConditions,
+        items: lineItems.map(({ description, quanity, rate }) => ({
+          description,
+          quantity: quanity,
+          rate,
+          amount: quanity * rate,
+        })),
+      })
+      notify('Invoice Successfully created', 'success')
+    } catch (e) {
+      const message = 'Something went wrong while saving the invoice'
+
+      notify(message, 'error')
+    }
+  }
 
   const generatePDF = async () => {
     if (fromAddress === '' || toAddress === '' || date === '' || total === 0) {
       return
     }
+
+    await save()
 
     const doc = new jsPDF('p', 'pt', 'a4')
     const html = document.querySelector('#page') as HTMLElement
@@ -65,24 +96,7 @@ export const Preview = () => {
         pdf.save(`invoice_#${invoiceNumber}.pdf`)
       },
     })
-
-    await addInvoice({
-      invoiceNumber: invoiceNumber,
-      date: date,
-      paymentTerms: paymentTerms,
-      dueDate: dueDate,
-      poNumber: poNumber,
-      yourAddress: fromAddress,
-      billingAddress: toAddress,
-      notes: notes,
-      terms: termsAndConditions,
-      items: lineItems.map(({ description, quanity, rate }) => ({
-        description,
-        quantity: quanity,
-        rate,
-        amount: quanity * rate,
-      })),
-    })
+    notify('Invoice Successfully created', 'success')
   }
 
   const totalFormatted = total
@@ -161,9 +175,10 @@ export const Preview = () => {
               <ReviewButton>
                 <Button
                   action={generatePDF}
-                  value={'Download PDF'}
+                  value={'Save and Download PDF'}
                   type={'primary'}
                 />
+                <Button action={save} value={'Save'} type={'primary'} />
               </ReviewButton>
             </ButtonArea>
           </Container>

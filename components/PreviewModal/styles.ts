@@ -174,6 +174,9 @@ export const ButtonArea = styled.div`
 
 export const ReviewButton = styled.div`
   width: 226px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 `
 
 export const HeaderRow = styled.div`

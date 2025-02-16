@@ -150,9 +150,7 @@ export const Layout: React.FC<IProps> = ({ children }) => {
               {links.map((link) => {
                 return (
                   <Link href={`/${link.url}`} key={link.url}>
-                    <a>
-                      <li>{link.name}</li>
-                    </a>
+                    <li>{link.name}</li>
                   </Link>
                 )
               })}
