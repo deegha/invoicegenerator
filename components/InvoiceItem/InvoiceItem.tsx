@@ -150,7 +150,7 @@ export const InvoiceItem: React.FC<IInvoiceItem> = ({
         value={rate}
         name="rate"
         onChangeText={handleDescription}
-        type="text"
+        type="number"
         placeHolder="0"
       />
       <Amount>

@@ -20,14 +20,14 @@ const Container = styled.div`
 `
 
 interface Item {
-  lable: React.ReactNode
+  label: React.ReactNode
   value: React.ReactNode
 }
 
-export const FooterItem: React.FC<Item> = ({ lable, value }) => {
+export const FooterItem: React.FC<Item> = ({ label, value }) => {
   return (
     <Container>
-      <div>{lable}</div>
+      <div>{label}</div>
       <div>{value}</div>
     </Container>
   )

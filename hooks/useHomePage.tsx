@@ -63,32 +63,32 @@ export const useHomePage = () => {
       })
     }
 
-    if (window) {
-      const presist = JSON.parse(
-        localStorage.getItem('inputs') as string
-      ) as IInputs
-      setInputs({
-        ...inputs,
-        fromAddress: (presist && presist.fromAddress) || '',
-        toAddress: (presist && presist.toAddress) || '',
-        invoiceNumber: (presist && presist.invoiceNumber) || '',
-        date: (presist && presist.date) || '',
-        dueDate: (presist && presist.dueDate) || '',
-        paymentTerms: (presist && presist.paymentTerms) || '',
-        poNumber: (presist && presist.poNumber) || '',
-        notes: (presist && presist.notes) || '',
-        termsAndConditions: (presist && presist.termsAndConditions) || '',
-        discount: (presist && presist.discount) || '',
-        tax: (presist && presist.tax) || '',
-        shipping: (presist && presist.shipping) || '',
-      })
+    // if (window) {
+    //   const presist = JSON.parse(
+    //     localStorage.getItem('inputs') as string
+    //   ) as IInputs
+    //   setInputs({
+    //     ...inputs,
+    //     fromAddress: (presist && presist.fromAddress) || '',
+    //     toAddress: (presist && presist.toAddress) || '',
+    //     invoiceNumber: (presist && presist.invoiceNumber) || '',
+    //     date: (presist && presist.date) || '',
+    //     dueDate: (presist && presist.dueDate) || '',
+    //     paymentTerms: (presist && presist.paymentTerms) || '',
+    //     poNumber: (presist && presist.poNumber) || '',
+    //     notes: (presist && presist.notes) || '',
+    //     termsAndConditions: (presist && presist.termsAndConditions) || '',
+    //     discount: (presist && presist.discount) || '',
+    //     tax: (presist && presist.tax) || '',
+    //     shipping: (presist && presist.shipping) || '',
+    //   })
 
-      setLineItems(
-        localStorage.getItem('lineItems')
-          ? JSON.parse(localStorage.getItem('lineItems') as string)
-          : []
-      )
-    }
+    //   setLineItems(
+    //     localStorage.getItem('lineItems')
+    //       ? JSON.parse(localStorage.getItem('lineItems') as string)
+    //       : []
+    //   )
+    // }
   }, [])
 
   useEffect(() => {
@@ -123,6 +123,7 @@ export const useHomePage = () => {
   }
 
   const changeItem = (value: string | number, id: string, name: string) => {
+    console.log(typeof value, 'value', value)
     const itemIndex = lineItems.findIndex((item) => item.id === id)
     const newItems = [...lineItems]
 

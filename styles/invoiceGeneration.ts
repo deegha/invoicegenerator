@@ -50,7 +50,7 @@ export const DetailedSectionRight = styled.div`
   row-gap: 15px;
 `
 
-export const Lable = styled.div`
+export const Label = styled.div`
   margin-bottom: 2px;
   font-size: 14px;
   width: 50%;

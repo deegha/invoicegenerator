@@ -1,8 +1,9 @@
 import { Layout, H1 } from 'components'
 import styled from 'styled-components'
 import { NextPage } from 'next'
-
+import { getInvoices } from 'services/invoiceService'
 import { InnerContainer } from 'styles'
+import useSWR from 'swr'
 
 const InvoiceListContainer = styled.div`
   display: flex;
@@ -46,47 +47,26 @@ const CardItem = styled.div`
   }
 `
 
-const invoices = [
-  {
-    number: 'INV-12345',
-    amount: '$1,500',
-    billingCompany: 'TechCorp',
-    date: '2025-02-10',
-  },
-  {
-    number: 'INV-12346',
-    amount: '$750',
-    billingCompany: 'BizSolutions',
-    date: '2025-02-05',
-  },
-  {
-    number: 'INV-12347',
-    amount: '$2,200',
-    billingCompany: 'SoftWare Ltd.',
-    date: '2025-01-30',
-  },
-  {
-    number: 'INV-12348',
-    amount: '$900',
-    billingCompany: 'DevWorks',
-    date: '2025-01-25',
-  },
-]
-
 const Home: NextPage = () => {
+  const { data: invoices, isLoading } = useSWR('fetch-invoices', getInvoices)
+
   return (
     <Layout>
       <InnerContainer>
         <H1>INVOICES LIST</H1>
         <InvoiceListContainer>
-          {invoices.map((invoice) => (
-            <InvoiceCard key={invoice.number}>
-              <CardItem>{invoice.number}</CardItem>
-              <CardItem>{invoice.amount}</CardItem>
-              <CardItem>{invoice.billingCompany}</CardItem>
-              <CardItem>{invoice.date}</CardItem>
-            </InvoiceCard>
-          ))}
+          {isLoading ? (
+            <div>loading</div>
+          ) : (
+            invoices?.map((invoice) => (
+              <InvoiceCard key={invoice.invoiceNumber}>
+                <CardItem>{invoice.invoiceNumber}</CardItem>
+                <CardItem> {invoice.subTotal.toString()} USD</CardItem>
+                <CardItem>{invoice?.billingAddress}</CardItem>
+                <CardItem>{invoice?.createdAt.toISOString()}</CardItem>
+              </InvoiceCard>
+            ))
+          )}
         </InvoiceListContainer>
       </InnerContainer>
     </Layout>

@@ -8,6 +8,7 @@ import {
   H1,
   FooterItem,
   Currency,
+  DatePicker,
 } from 'components'
 import { useInvoice } from 'context/invoiceContext'
 import { usePreview } from 'context/previewContext'
@@ -23,7 +24,7 @@ import {
   InvoiceDetails,
   DetailedSectionLeft,
   DetailedSectionRight,
-  Lable,
+  Label,
   LineItems,
   LineItemHeader,
   LineItemsContent,
@@ -49,24 +50,14 @@ const Home: NextPage = () => {
     changeItem,
     removeItem,
   } = useInvoice()
-  const handleTextChange = (value: string | number, name: string) => {
+  const handleTextChange = (value: string | number | Date, name: string) => {
+    console.log(value, '=====')
     setInputs({
       ...inputs,
       [name]: value,
     })
   }
   const { showModal } = usePreview()
-
-  // const { currencies, setCurrency } = useCurrenncy()
-
-  // const handleSelectCurrency = (item: Option) => {
-  //   const c = currencies.filter((cr) => cr.currencyCode === item.value)[0]
-  //   setCurrency(c)
-  //   setInputs({
-  //     ...inputs,
-  //     currency: c,
-  //   })
-  // }
 
   const handleCreate = () => {
     showModal()
@@ -87,7 +78,7 @@ const Home: NextPage = () => {
             <DetailedSectionLeft>
               {detaislInputs.map((field) => (
                 <InputContainer key={field.name}>
-                  <Lable>{field.lable}</Lable>
+                  <Label>{field.Label}</Label>
                   <TextInput
                     value={inputs[field.value] as string}
                     onChangeText={handleTextChange}
@@ -97,11 +88,23 @@ const Home: NextPage = () => {
                   />
                 </InputContainer>
               ))}
+              <DatePicker
+                label="Invoicing date"
+                onChange={(selectedDate) =>
+                  handleTextChange(selectedDate.toDateString(), 'date')
+                }
+              />
+              <DatePicker
+                label="Due date"
+                onChange={(selectedDate) =>
+                  handleTextChange(selectedDate.toDateString(), 'dueDate')
+                }
+              />
             </DetailedSectionLeft>
             <DetailedSectionRight>
               {addressDetails.map((field) => (
                 <InputContainer key={field.name}>
-                  <Lable>{field.lable}</Lable>
+                  <Label>{field.Label}</Label>
                   <TextArea
                     value={inputs[field.value] as string}
                     onChangeText={handleTextChange}
@@ -145,7 +148,7 @@ const Home: NextPage = () => {
             <FooterLeft>
               {footerDetails.map((field) => (
                 <InputContainer key={field.name}>
-                  <Lable>{field.lable}</Lable>
+                  <Label>{field.Label}</Label>
                   <TextArea
                     value={inputs[field.value] as string}
                     onChangeText={handleTextChange}
@@ -157,7 +160,7 @@ const Home: NextPage = () => {
             </FooterLeft>
             <FooterRight>
               <FooterItem
-                lable={'Sub total'}
+                label={'Sub total'}
                 value={
                   <Subtotal>
                     <Currency />
@@ -166,7 +169,7 @@ const Home: NextPage = () => {
                 }
               />
               <FooterItem
-                lable={<Duetotal>Balance Due</Duetotal>}
+                label={<Duetotal>Balance Due</Duetotal>}
                 value={
                   <Duetotal>
                     <Currency />

@@ -2,7 +2,7 @@ import { IInputs } from 'hooks/useHomePage'
 import { InputType } from 'components/TextInput/d'
 
 interface Ifeild {
-  lable: string
+  Label: string
   value: keyof IInputs
   name: string
   type: InputType
@@ -11,35 +11,21 @@ interface Ifeild {
 
 export const detaislInputs: Array<Ifeild> = [
   {
-    lable: 'Invoice number',
+    Label: 'Invoice number',
     value: 'invoiceNumber',
     name: 'invoiceNumber',
     type: 'text',
     placeHolder: 'Invoice number',
   },
   {
-    lable: 'Date',
-    value: 'date',
-    name: 'date',
-    type: 'text',
-    placeHolder: 'Invoicing date',
-  },
-  {
-    lable: 'Payment terms',
+    Label: 'Payment terms',
     value: 'paymentTerms',
     name: 'paymentTerms',
     type: 'text',
     placeHolder: 'Payment terms',
   },
   {
-    lable: 'Due date',
-    value: 'dueDate',
-    name: 'dueDate',
-    type: 'text',
-    placeHolder: 'Invoice due date',
-  },
-  {
-    lable: 'PO number',
+    Label: 'PO number',
     value: 'poNumber',
     name: 'poNumber',
     type: 'text',
@@ -49,14 +35,14 @@ export const detaislInputs: Array<Ifeild> = [
 
 export const addressDetails: Array<Ifeild> = [
   {
-    lable: 'Your address',
+    Label: 'Your address',
     value: 'fromAddress',
     name: 'fromAddress',
     type: 'text',
     placeHolder: 'Enter your address',
   },
   {
-    lable: 'Billing address',
+    Label: 'Billing address',
     value: 'toAddress',
     name: 'toAddress',
     type: 'text',
@@ -66,14 +52,14 @@ export const addressDetails: Array<Ifeild> = [
 
 export const footerDetails: Array<Ifeild> = [
   {
-    lable: 'Notes',
+    Label: 'Notes',
     value: 'notes',
     name: 'notes',
     type: 'text',
     placeHolder: 'Add notes if any',
   },
   {
-    lable: 'Terms',
+    Label: 'Terms',
     value: 'termsAndConditions',
     name: 'termsAndConditions',
     type: 'text',
