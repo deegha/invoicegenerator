@@ -136,14 +136,14 @@ export const InvoiceItem: React.FC<IInvoiceItem> = ({
         name="description"
         onChangeText={handleDescription}
         type="text"
-        placeHolder="Describe what you did"
+        placeholder="Describe what you did"
       />
       <TextInput
         value={quanity}
         name="quanity"
         onChangeText={handleDescription}
         type="number"
-        placeHolder="1"
+        placeholder="1"
       />
       <TextInput
         icon={<CurrencyIcon>{activeCur.currencyCode}</CurrencyIcon>}
@@ -151,7 +151,7 @@ export const InvoiceItem: React.FC<IInvoiceItem> = ({
         name="rate"
         onChangeText={handleDescription}
         type="number"
-        placeHolder="0"
+        placeholder="0"
       />
       <Amount>
         <CurrencyIcon>{activeCur.currencyCode}</CurrencyIcon>

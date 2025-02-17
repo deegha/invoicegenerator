@@ -18,7 +18,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'font-semibold rounded-lg flex items-center justify-center gap-2 text-white transition-all duration-300 cursor-pointer shadow-md'
+    'text-sm rounded-sm flex items-center justify-center gap-2  transition-all duration-300 cursor-pointer '
 
   const sizes = {
     small: 'px-3 py-2 text-sm',
@@ -27,9 +27,9 @@ export const Button: React.FC<ButtonProps> = ({
   }
 
   const variants = {
-    primary: 'bg-[#3674B5] hover:bg-[#578FCA]',
-    secondary: 'bg-[#A1E3F9] hover:bg-[#D1F8EF] text-black',
-    danger: 'bg-[#d32f2f] hover:bg-[#b52a2a]',
+    primary: 'bg-sky-400 hover:bg-sky-500 text-white shadow-md',
+    secondary: ' text-sky-400 font-semibold',
+    danger: 'bg-rose-600 hover:bg-rose-600 text-white shadow-md',
   }
 
   return (

@@ -1,44 +1,25 @@
 import React from 'react'
-import styled from 'styled-components'
 
 interface IInputProps {
   name: string
   value: string | number
-  placeHolder?: string
+  placeholder?: string
   onChangeText: (value: string | number, name: string) => void
 }
-
-const Container = styled.textarea`
-  width: 100%;
-  padding: 0.625rem;
-  border: 1px solid #ced6e0;
-  border-radius: 0.3rem;
-  min-height: 103px;
-  font-size: 14px;
-  resize: none;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  &:focus {
-    outline: none;
-  }
-
-  &::placeholder {
-    opacity: 0.4;
-  }
-`
 
 export const TextArea: React.FC<IInputProps> = ({
   name,
   value,
-  placeHolder,
+  placeholder,
   onChangeText,
 }) => {
   return (
-    <Container
+    <textarea
       name={name}
       value={value}
-      placeholder={placeHolder}
+      placeholder={placeholder}
       onChange={(e) => onChangeText(e.target.value, name)}
-    ></Container>
+      className="w-full p-2 border border-gray-300 rounded-md min-h-[103px] text-sm resize-none focus:outline-none placeholder-opacity-40"
+    />
   )
 }

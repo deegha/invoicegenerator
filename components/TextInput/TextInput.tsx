@@ -1,56 +1,23 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import styled from 'styled-components'
 import { Eye, EyeOff } from 'react-feather'
 import { IInputProps, InputType } from './d'
 
-const Container = styled.div`
-  width: 100%;
-  padding: 0.625rem;
-  border: 1px solid #dbdee3;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 35px;
-  gap: 2px;
-
-  input {
-    font-size: 14px;
-    width: 100%;
-    border: none;
-    -webkit-appearance: none;
-    -moz-appearance: textfield;
-    margin: 0;
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 16px;
-    color: #000000;
-  }
-
-  input::placeholder {
-    opacity: 0.4;
-  }
-  input:focus {
-    outline: none;
-  }
-`
-
 const ShowHidePassword = ({
   showPassword,
-  handleOnCliCk,
+  handleOnClick,
 }: {
   showPassword: boolean
-  handleOnCliCk: (type: InputType) => void
+  handleOnClick: (type: InputType) => void
 }) => {
   return showPassword ? (
     <EyeOff
-      onClick={() => handleOnCliCk('password')}
-      style={{ color: '#b2bec3', cursor: 'pointer' }}
+      onClick={() => handleOnClick('password')}
+      className="text-gray-400 cursor-pointer"
     />
   ) : (
     <Eye
-      onClick={() => handleOnCliCk('text')}
-      style={{ color: '#b2bec3', cursor: 'pointer' }}
+      onClick={() => handleOnClick('text')}
+      className="text-gray-400 cursor-pointer"
     />
   )
 }
@@ -61,11 +28,12 @@ export const TextInput: React.FC<IInputProps> = ({
   name,
   value,
   type,
-  placeHolder,
+  placeholder,
   onChangeText,
   icon,
 }) => {
   const [inputType, setInputType] = useState<InputType>()
+
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (type === 'number' && e.target.value.match(regex)) {
       return
@@ -78,7 +46,7 @@ export const TextInput: React.FC<IInputProps> = ({
 
   useEffect(() => {
     setInputType(type)
-  }, [])
+  }, [type])
 
   const changeInputType = (type: InputType) => {
     setInputType(type)
@@ -87,23 +55,23 @@ export const TextInput: React.FC<IInputProps> = ({
   const IconElement = icon
 
   return (
-    <Container>
-      {IconElement && icon}
+    <div className="w-full p-2 border border-gray-300 rounded-sm flex items-center gap-2 h-[35px]">
+      {IconElement && <span className="text-gray-500 ">{icon}</span>}
       <input
-        multiple
         inputMode={inputType === 'number' ? 'numeric' : 'text'}
         name={name}
         value={value}
         type={inputType === 'number' ? 'text' : inputType}
-        placeholder={placeHolder}
+        placeholder={placeholder}
         onChange={handleOnChange}
+        className="w-full border-none outline-none text-sm font-light  text-black placeholder-opacity-40"
       />
       {type === 'password' && (
         <ShowHidePassword
           showPassword={inputType !== 'password'}
-          handleOnCliCk={changeInputType}
+          handleOnClick={changeInputType}
         />
       )}
-    </Container>
+    </div>
   )
 }

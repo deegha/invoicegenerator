@@ -6,7 +6,7 @@ export interface IInputProps {
   name: string
   value: string | number
   type: InputType
-  placeHolder?: string
+  placeholder?: string
   icon?: React.ReactNode
   onChangeText: (value: string | number, name: string) => void
 }

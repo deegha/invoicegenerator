@@ -38,7 +38,7 @@ export const Pagination = ({ numberOfPage }: IPagination) => {
             className={`cursor-pointer px-4 py-2 rounded-lg transition-all duration-200 
             ${
               parseInt(activePage) === page
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-sky-400 text-white hover:bg-sky-500'
                 : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 hover:scale-105'
             }
             `}

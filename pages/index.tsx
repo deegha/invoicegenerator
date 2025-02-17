@@ -1,3 +1,5 @@
+import { useInvoice } from 'context/invoiceContext'
+import { usePreview } from 'context/previewContext'
 import {
   TextInput,
   TextArea,
@@ -10,34 +12,12 @@ import {
   Currency,
   DatePicker,
 } from 'components'
-import { useInvoice } from 'context/invoiceContext'
-import { usePreview } from 'context/previewContext'
 import {
   detaislInputs,
   addressDetails,
   footerDetails,
 } from 'utils/invoiceFormData'
 import { NextPage } from 'next'
-
-import {
-  InnerContainer,
-  InvoiceDetails,
-  DetailedSectionLeft,
-  DetailedSectionRight,
-  Label,
-  LineItems,
-  LineItemHeader,
-  LineItemsContent,
-  ButtonContainer,
-  Amount,
-  FooterContainer,
-  InputContainer,
-  Duetotal,
-  FormWrapper,
-  LineItemHeaderItem,
-  FooterLeft,
-  Subtotal,
-} from 'styles'
 
 const Home: NextPage = () => {
   const {
@@ -49,19 +29,20 @@ const Home: NextPage = () => {
     changeItem,
     removeItem,
   } = useInvoice()
+  const { showModal } = usePreview()
+
   const handleTextChange = (value: string | number | Date, name: string) => {
     setInputs({
       ...inputs,
       [name]: value,
     })
   }
-  const { showModal } = usePreview()
 
   const handleCreate = () => {
     showModal()
   }
 
-  const dissabled =
+  const disabled =
     total === 0 ||
     inputs.fromAddress === '' ||
     inputs.dueDate === '' ||
@@ -69,22 +50,22 @@ const Home: NextPage = () => {
 
   return (
     <Layout>
-      <InnerContainer>
-        <H1>GENERATE INVOICES</H1>
-        <FormWrapper>
-          <InvoiceDetails>
-            <DetailedSectionLeft>
+      <div className="flex flex-col gap-8 w-[954px] mx-auto  bg-gray-100 min-h-screen">
+        <H1 className="text-4xl font-light">GENERATE INVOICES</H1>
+        <div className="bg-white p-8 rounded shadow-md flex flex-col gap-8">
+          <div className="flex gap-6">
+            <div className="grid w-1/3 gap-4">
               {detaislInputs.map((field) => (
-                <InputContainer key={field.name}>
-                  <Label>{field.Label}</Label>
+                <div key={field.name} className="flex flex-col">
+                  <label className="text-sm font-bold">{field.Label}</label>
                   <TextInput
                     value={inputs[field.value] as string}
                     onChangeText={handleTextChange}
                     name={field.name}
                     type={field.type}
-                    placeHolder={field.placeHolder}
+                    placeholder={field.placeHolder}
                   />
-                </InputContainer>
+                </div>
               ))}
               <DatePicker
                 label="Invoicing date"
@@ -98,34 +79,34 @@ const Home: NextPage = () => {
                   handleTextChange(selectedDate.toDateString(), 'dueDate')
                 }
               />
-            </DetailedSectionLeft>
-            <DetailedSectionRight>
+            </div>
+            <div className="grid w-2/5 gap-4">
               {addressDetails.map((field) => (
-                <InputContainer key={field.name}>
-                  <Label>{field.Label}</Label>
+                <div key={field.name} className="flex flex-col">
+                  <label className="text-sm font-bold">{field.Label}</label>
                   <TextArea
                     value={inputs[field.value] as string}
                     onChangeText={handleTextChange}
                     name={field.name}
-                    placeHolder={field.placeHolder}
+                    placeholder={field.placeHolder}
                   />
-                </InputContainer>
+                </div>
               ))}
-            </DetailedSectionRight>
-          </InvoiceDetails>
-          <LineItems>
-            <LineItemHeader>
-              <LineItemHeaderItem>Item</LineItemHeaderItem>
-              <LineItemHeaderItem>Quantity</LineItemHeaderItem>
-              <LineItemHeaderItem>Rate</LineItemHeaderItem>
-              <Amount>Amount</Amount>
-            </LineItemHeader>
-            <LineItemsContent>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-[60%_10%_10%_10%_5%] gap-2 p-2 bg-sky-400 text-white rounded-sm">
+              <span className="text-sm">Item</span>
+              <span className="text-sm">Quantity</span>
+              <span className="text-sm">Rate</span>
+              <span className="text-sm text-right">Amount</span>
+            </div>
+            <div className="mt-2">
               {lineItems.map((lineItem) => (
                 <InvoiceItem
-                  removeItem={removeItem}
-                  id={lineItem.id}
                   key={lineItem.id}
+                  id={lineItem.id}
+                  removeItem={removeItem}
                   description={lineItem.description}
                   quanity={lineItem.quanity}
                   rate={lineItem.rate}
@@ -133,63 +114,61 @@ const Home: NextPage = () => {
                   changeDes={changeItem}
                 />
               ))}
-            </LineItemsContent>
-          </LineItems>
-          <ButtonContainer>
+            </div>
+          </div>
+          <div className="flex justify-end">
             <Button onClick={addLineItem} variant="secondary">
-              Add lint item
+              Add line item
             </Button>
-          </ButtonContainer>
-          <FooterContainer>
-            <FooterLeft>
+          </div>
+          <div className="grid grid-cols-[50%_40%] gap-20">
+            <div className="flex flex-col gap-4">
               {footerDetails.map((field) => (
-                <InputContainer key={field.name}>
-                  <Label>{field.Label}</Label>
+                <div key={field.name} className="flex flex-col">
+                  <label className="text-sm font-bold">{field.Label}</label>
                   <TextArea
                     value={inputs[field.value] as string}
                     onChangeText={handleTextChange}
                     name={field.name}
-                    placeHolder={field.placeHolder}
+                    placeholder={field.placeHolder}
                   />
-                </InputContainer>
+                </div>
               ))}
-            </FooterLeft>
-            <div className="flex flex-col gap-10">
-              <div className="flex flex-col gap-2">
-                <FooterItem
-                  label={'Sub total'}
-                  value={
-                    <Subtotal>
-                      <Currency />
-                      {total}
-                    </Subtotal>
-                  }
-                />
-                <FooterItem
-                  label={<Duetotal>Balance Due</Duetotal>}
-                  value={
-                    <Duetotal>
-                      <Currency />
-                      {total}
-                    </Duetotal>
-                  }
-                />
-              </div>
-              <div className="flex justify-end w-full">
+            </div>
+            <div className="flex flex-col gap-4">
+              <FooterItem
+                label={'Sub total'}
+                value={
+                  <div className="flex gap-1 text-lg">
+                    <Currency />
+                    {total}
+                  </div>
+                }
+              />
+              <FooterItem
+                label={<span className="font-bold">Balance Due</span>}
+                value={
+                  <div className="flex gap-1 font-bold text-lg">
+                    <Currency />
+                    {total}
+                  </div>
+                }
+              />
+              <div className="flex justify-end">
                 <Button
                   onClick={handleCreate}
                   size="large"
                   variant="primary"
-                  disabled={dissabled}
+                  disabled={disabled}
                 >
                   Review
                 </Button>
               </div>
             </div>
-          </FooterContainer>
-        </FormWrapper>
+          </div>
+        </div>
         <Preview />
-      </InnerContainer>
+      </div>
     </Layout>
   )
 }
