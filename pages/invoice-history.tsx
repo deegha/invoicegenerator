@@ -1,9 +1,11 @@
-import { Layout, H1 } from 'components'
+import { Layout, H1, Pagination } from 'components'
 import styled from 'styled-components'
 import { NextPage } from 'next'
 import { getInvoices } from 'services/invoiceService'
 import { InnerContainer } from 'styles'
 import useSWR from 'swr'
+import { useState } from 'react'
+import { usePagination } from 'hooks'
 
 const InvoiceListContainer = styled.div`
   display: flex;
@@ -48,26 +50,37 @@ const CardItem = styled.div`
 `
 
 const InvoiceHistory: NextPage = () => {
-  const { data: invoices, isLoading } = useSWR('fetch-invoices', getInvoices)
+  const [loading, setLoading] = useState(false)
+  const { activePage } = usePagination()
+  const { data: invoices } = useSWR(['get-invoices', activePage], async () => {
+    setLoading(true)
+    const response = await getInvoices(activePage)
+    setLoading(false)
+
+    return response
+  })
 
   return (
     <Layout>
       <InnerContainer>
         <H1>INVOICES LIST</H1>
         <InvoiceListContainer>
-          {isLoading ? (
+          {loading ? (
             <ShimmerLoader />
           ) : (
-            invoices?.map((invoice) => (
+            invoices?.data?.map((invoice) => (
               <InvoiceCard key={invoice.invoiceNumber}>
                 <CardItem>{invoice.invoiceNumber}</CardItem>
                 <CardItem> {invoice.subTotal.toString()} USD</CardItem>
                 <CardItem>{invoice?.billingAddress}</CardItem>
-                <CardItem>{invoice?.createdAt.toDateString()}</CardItem>
+                <CardItem>
+                  {new Date(invoice?.createdAt).toDateString()}
+                </CardItem>
               </InvoiceCard>
             ))
           )}
         </InvoiceListContainer>
+        <Pagination numberOfPage={invoices?.totalPages || 1} />
       </InnerContainer>
     </Layout>
   )

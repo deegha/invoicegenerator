@@ -1,7 +1,15 @@
 import { getAuth } from 'firebase/auth'
 import { Invoice } from '@prisma/client'
 
-export async function getInvoices() {
+interface IInvoicesResponse {
+  data: Array<Invoice>
+  limit: number
+  page: number
+  total: number
+  totalPages: number
+}
+
+export async function getInvoices(page: string) {
   const auth = await getAuth()
   const user = auth.currentUser
 
@@ -9,10 +17,13 @@ export async function getInvoices() {
     throw new Error('User is not logged in')
   }
 
-  console.log('here333')
   const token = await user.getIdToken()
 
-  const response = await fetch('/api/invoice/get', {
+  const params = new URLSearchParams()
+  params.set('page', page)
+  params.set('limit', '10')
+
+  const response = await fetch(`/api/invoice/get?${params.toString()}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -20,9 +31,9 @@ export async function getInvoices() {
     },
   })
 
-  const data: Array<Invoice> = await response.json()
+  const data: IInvoicesResponse = await response.json()
   if (!response.ok) {
-    throw new Error('Failed to add invoice')
+    throw new Error('Failed to fetch invoice')
   }
 
   return data
