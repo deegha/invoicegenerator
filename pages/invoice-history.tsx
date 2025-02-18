@@ -1,4 +1,4 @@
-import { Layout, H1, Pagination } from 'components'
+import { Layout, H1, Pagination, DetailDrawer } from 'components'
 import styled from 'styled-components'
 import { NextPage } from 'next'
 import { getInvoices } from 'services/invoiceService'
@@ -52,13 +52,28 @@ const CardItem = styled.div`
 const InvoiceHistory: NextPage = () => {
   const [loading, setLoading] = useState(false)
   const { activePage } = usePagination()
-  const { data: invoices } = useSWR(['get-invoices', activePage], async () => {
-    setLoading(true)
-    const response = await getInvoices(activePage)
-    setLoading(false)
+  const [activeItem, setActiveItem] = useState<number>()
+  const { data: invoices } = useSWR(
+    ['get-invoices', activePage],
+    async () => {
+      setLoading(true)
+      const response = await getInvoices(activePage)
+      setLoading(false)
 
-    return response
-  })
+      return response
+    },
+    {
+      revalidateOnFocus: false,
+    }
+  )
+
+  const handleOnclickRow = (id: number) => {
+    setActiveItem(id)
+  }
+
+  const handleCloseDrawer = () => {
+    setActiveItem(undefined)
+  }
 
   return (
     <Layout>
@@ -69,7 +84,10 @@ const InvoiceHistory: NextPage = () => {
             <ShimmerLoader />
           ) : (
             invoices?.data?.map((invoice) => (
-              <InvoiceCard key={invoice.invoiceNumber}>
+              <InvoiceCard
+                key={invoice.invoiceNumber}
+                onClick={() => handleOnclickRow(invoice.id)}
+              >
                 <CardItem>{invoice.invoiceNumber}</CardItem>
                 <CardItem> {invoice.subTotal.toString()} USD</CardItem>
                 <CardItem>{invoice?.billingAddress}</CardItem>
@@ -82,6 +100,12 @@ const InvoiceHistory: NextPage = () => {
         </InvoiceListContainer>
         <Pagination numberOfPage={invoices?.totalPages || 1} />
       </InnerContainer>
+
+      <DetailDrawer
+        id={activeItem as number}
+        isOpen={activeItem ? true : false}
+        onClose={handleCloseDrawer}
+      />
     </Layout>
   )
 }

@@ -58,7 +58,7 @@ export const Layout: React.FC<IProps> = ({ children }) => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-100">
-      <div className="fixed top-0 w-full bg-white z-30">
+      <div className="fixed top-0 w-full bg-white z-10">
         <div className="max-w-[954px] mx-auto flex justify-between items-center h-16 ">
           <nav className="flex items-center gap-4">
             <Image
